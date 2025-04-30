@@ -35,6 +35,12 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (gameManager == null)
+        {
+            gameManager = FindAnyObjectByType<GameManager>();
+            if (gameManager == null) return; // Chưa có GameManager thì skip luôn Update
+        }
+
         if (gameManager.IsGameOver() || gameManager.IsGameLoading()) return;
         HandleMovement();
         HandleJump();

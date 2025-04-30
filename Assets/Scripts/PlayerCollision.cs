@@ -82,5 +82,10 @@ public class PlayerCollision : MonoBehaviour
         //    gameManager.GameOver();
         //    Debug.Log("Dang di chuyen tren cat lun");
         //}
+        else if (collision.CompareTag("End"))
+        {
+            gameManager.GameWin();
+            Debug.Log("Victory");
+        }
     }
 }

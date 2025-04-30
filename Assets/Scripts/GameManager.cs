@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
 
 
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,6 +48,10 @@ public class GameManager : MonoBehaviour
         
     }
 
+    void Awake()
+    {
+     
+    }
 
     //Thêm và cập nhật Coins
 
@@ -54,14 +59,21 @@ public class GameManager : MonoBehaviour
     {
         if (!isGameOver && !isGameWin) 
         {
-            score += points;
+            //Cách 1 
+            //score += points;
+            //UpdateScore();
+            //Cách 2
+            GameDataManager.Instance.Score += points;
             UpdateScore();
         }
     }
 
     private void UpdateScore()
     {
-        scoreText.text = score.ToString();
+        //Cách 1
+        //scoreText.text = score.ToString();
+        //Cách 2
+        scoreText.text = GameDataManager.Instance.Score.ToString();
     }
 
 
@@ -70,33 +82,62 @@ public class GameManager : MonoBehaviour
     {
         if(!isGameOver && !isGameWin && !isGameLoading)
         {
-            scorekey += keys;
+            //Cách 1
+            //scorekey += keys;
+            //UpdateScoreKey();
+
+            //Cách 2
+            GameDataManager.Instance.ScoreKey += keys;
             UpdateScoreKey();
         }
     }
 
     public void UpdateScoreKey()
     {
-        scoreKeyText.text = scorekey.ToString();
+        //Cách 1
+        //scoreKeyText.text = scorekey.ToString();
+
+        //Cách 2
+        scoreKeyText.text = GameDataManager.Instance.ScoreKey.ToString();
     }
 
     //Game thua cuộc
 
     public void GameOver() 
     {
-        isGameOver = true; //Hiện gameover thành true
-        score = 0; //Reset lại điểm về thành 0
-        scorekey = 0; //Reset key về thành 0
-        Time.timeScale = 0; //Không cho người dùng ấn nút khi game thua
-        gameOverUi.SetActive(true); //Hiện cái Panel GameOver lên thành true
+        //Cách 1
+        //isGameOver = true; //Hiện gameover thành true
+        //score = 0; //Reset lại điểm về thành 0
+        //scorekey = 0; //Reset key về thành 0
+        //Time.timeScale = 0; //Không cho người dùng ấn nút khi game thua
+        //gameOverUi.SetActive(true); //Hiện cái Panel GameOver lên thành true
+
+        //Cách 2
+        isGameOver = true;
+        GameDataManager.Instance.ResetAll(); // Reset từ GameDataManager
+        UpdateScore();
+        UpdateScoreKey();
+        Time.timeScale = 0;
+        gameOverUi.SetActive(true);
     }
 
     public void RestarGame(string sceneName)
     {
-        Debug.Log("Reset Game:" + sceneName);
+        //Cách 1
+        //Debug.Log("Reset Game:" + sceneName);
+        //isGameOver = false;
+        //score = 0;
+        //scorekey = 0;
+        //UpdateScore();
+        //UpdateScoreKey();
+        //Time.timeScale = 1;
+        //SceneManager.LoadScene(sceneName);
+
+        //Cách 2
+        Debug.Log("Reset Game: " + sceneName);
         isGameOver = false;
-        score = 0;
-        scorekey = 0;
+        GameDataManager.Instance.Score = 0;
+        // GameDataManager.Instance.ScoreKey = không reset để giữ nguyên
         UpdateScore();
         UpdateScoreKey();
         Time.timeScale = 1;
@@ -138,8 +179,25 @@ public class GameManager : MonoBehaviour
     //Game Win
     public void GameWin()
     {
-        isGameWin = true;
-        Time.timeScale = 0;
+        ////Cách 1
+        //isGameWin = true;
+        //score = 0; //Reset lại điểm về thành 0
+        //scorekey = 0; //Reset key về thành 0
+        //Time.timeScale = 0; //Không cho người dùng ấn nút khi game thua
+        //gameWinUi.SetActive(true); //Hiện cái Panel GameWin lên thành true
 
+        //Cách 2
+        isGameWin = true;
+        GameDataManager.Instance.ResetAll();
+        UpdateScore();
+        UpdateScoreKey();
+        Time.timeScale = 0;
+        gameWinUi.SetActive(true);
+    }
+
+    public void Mainmenu()
+    {
+        SceneManager.LoadScene("Menu");
+        Debug.Log("Main Menu");
     }
 }
